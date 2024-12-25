@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Creator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            height: 100vh;
+            color: #e0e0e0;
+        }
+
+        #container {
+            display: flex;
+            flex: 1;
+        }
+
+        #editor {
+            width: 30%;
+            background-color: #1c1c1c;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+        }
+
+        #editor h1 {
+            font-size: 24px;
+            color: #76e1ff;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #76e1ff;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        #editor input, #editor select, #editor button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background: #2b2b2b;
+            color: #e0e0e0;
+        }
+
+        #editor button {
+            background-color: #76e1ff;
+            color: #1c1c1c;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s ease;
+            border-radius: 5px;
+        }
+
+        #editor button:hover {
+            background-color: #5bc3e8;
+        }
+
+        #editor input:focus, #editor select:focus {
+            outline: none;
+            border-color: #76e1ff;
+        }
+
+        #editor label {
+            font-size: 15px;
+            color: #76e1ff;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        #canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #121212;
+        }
+
+        canvas {
+            border: 2px solid #76e1ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-style-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .text-style-options button {
+            width: 48%;
+            padding: 10px;
+            font-size: 14px;
+            background: #2b2b2b;
+            color: #76e1ff;
+            border: 1px solid #444;
+        }
+
+        .text-style-options button:hover {
+            background: #3c3c3c;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="editor">
+            <h1>Sticker Editor</h1>
+            <label for="imageUploader">Upload Image</label>
+            <input type="file" id="imageUploader" accept="image/*">
+
+            <button id="removeBackground">Remove Background</button>
+
+            <label for="textInput">Add Text</label>
+            <input type="text" id="textInput" placeholder="Enter your text">
+
+            <label for="textColor">Text Color</label>
+            <input type="color" id="textColor" value="#ffffff">
+
+            <label for="fontSize">Font Size</label>
+            <select id="fontSize">
+                <option value="20">20px</option>
+                <option value="30" selected>30px</option>
+                <option value="40">40px</option>
+                <option value="50">50px</option>
+            </select>
+
+            <label for="fontStyle">Font Style</label>
+            <select id="fontStyle">
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+
+            <label for="textAlign">Text Alignment</label>
+            <select id="textAlign">
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+            </select>
+
+            <label for="textStyle">3D Text Style</label>
+            <select id="textStyle">
+                <option value="none">None</option>
+                <option value="epic">Epic</option>
+                <option value="bold">Bold</option>
+                <option value="crack">Crack</option>
+                <option value="forward">Forward</option>
+                <option value="chocolate">Chocolate</option>
+            </select>
+
+            <div class="text-style-options">
+                <button id="boldText">Bold</button>
+                <button id="italicText">Italic</button>
+            </div>
+
+            <div class="text-style-options">
+                <button id="underlineText">Underline</button>
+                <button id="shadowText">Shadow</button>
+            </div>
+
+            <button id="addText">Add Text</button>
+
+            <label for="emojiPicker">Add Emoji</label>
+            <select id="emojiPicker">
+                <option value="">Select Emoji</option>
+                <option value="😀">😀</option>
+                <option value="😂">😂</option>
+                <option value="❤️">❤️</option>
+                <option value="🎉">🎉</option>
+                <option value="🔥">🔥</option>
+                <option value="😎">😎</option>
+                <option value="👑">👑</option>
+                <option value="🥳">🥳</option>
+                <option value="🍕">🍕</option>
+                <option value="🚬">🚬</option>
+                <option value="🕶️">🕶️</option>
+                <option value="🎩">🎩</option>
+                <option value="🌟">🌟</option>
+                <option value="💎">💎</option>
+                <option value="🍔">🍔</option>
+                <option value="🌈">🌈</option>
+                <option value="⚽">⚽</option>
+                <option value="🎵">🎵</option>
+                <option value="🦄">🦄</option>
+                <option value="🕺">🕺</option>
+                <option value="🍩">🍩</option>
+                <option value="🍓">🍓</option>
+                <option value="🎀">🎀</option>
+                <option value="🏆">🏆</option>
+                <option value="🚗">🚗</option>
+                <option value="✈️">✈️</option>
+                <option value="🎯">🎯</option>
+                <option value="💡">💡</option>
+                <option value="📸">📸</option>
+                <option value="🖌️">🖌️</option>
+                <option value="📚">📚</option>
+                <option value="🎬">🎬</option>
+                <option value="🎮">🎮</option>
+            </select>
+            <button id="addEmoji">Add Emoji</button>
+
+            <button id="downloadSticker">Download Sticker</button>
+        </div>
+        <div id="canvas-container">
+            <canvas id="stickerCanvas" width="500" height="500"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('stickerCanvas');
+        const ctx = canvas.getContext('2d');
+        const imageUploader = document.getElementById('imageUploader');
+        const removeBackgroundButton = document.getElementById('removeBackground');
+        const textInput = document.getElementById('textInput');
+        const textColor = document.getElementById('textColor');
+        const fontSize = document.getElementById('fontSize');
+        const fontStyle = document.getElementById('fontStyle');
+        const textAlign = document.getElementById('textAlign');
+        const textStyle = document.getElementById('textStyle');
+        const addTextButton = document.getElementById('addText');
+        const emojiPicker = document.getElementById('emojiPicker');
+        const addEmojiButton = document.getElementById('addEmoji');
+        const downloadButton = document.getElementById('downloadSticker');
+
+        const boldTextButton = document.getElementById('boldText');
+        const italicTextButton = document.getElementById('italicText');
+        const underlineTextButton = document.getElementById('underlineText');
+        const shadowTextButton = document.getElementById('shadowText');
+
+        let image = null;
+        let isBold = false;
+        let isItalic = false;
+        let isUnderline = false;
+        let isShadow = false;
+
+        // Handle image upload
+        imageUploader.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    image = new Image();
+                    image.onload = () => {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    };
+                    image.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove background from the uploaded image
+       // Remove background from the uploaded image
+removeBackgroundButton.addEventListener('click', async () => {
+    if (imageUploader.files.length > 0) {
+        const file = imageUploader.files[0];
+        try {
+            const formData = new FormData();
+            formData.append('image_file', file);
+
+            const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': 'jAphqbnesxaEmGnjZnoqHiju',
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Background removal failed');
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const newImage = new Image();
+            newImage.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(newImage, 0, 0, canvas.width, canvas.height);
+            };
+            newImage.src = url;
+        } catch (error) {
+            alert('Error removing background: ' + error.message);
+        }
+    } else {
+        alert('Please upload an image first.');
+    }
+});
+
+        // Toggle text styles
+        boldTextButton.addEventListener('click', () => {
+            isBold = !isBold;
+            boldTextButton.style.backgroundColor = isBold ? '#5bc3e8' : '#2b2b2b';
+        });
+
+        italicTextButton.addEventListener('click', () => {
+            isItalic = !isItalic;
+            italicTextButton.style.backgroundColor = isItalic ? '#5bc3e8' : '#2b2b2b';
+        });
+
+        underlineTextButton.addEventListener('click', () => {
+            isUnderline = !isUnderline;
+            underlineTextButton.style.backgroundColor = isUnderline ? '#5bc3e8' : '#2b2b2b';
+        });
+
+        shadowTextButton.addEventListener('click', () => {
+            isShadow = !isShadow;
+            shadowTextButton.style.backgroundColor = isShadow ? '#5bc3e8' : '#2b2b2b';
+        });
+
+        // Add text to canvas
+        addTextButton.addEventListener('click', () => {
+            const text = textInput.value;
+            const color = textColor.value;
+            const size = fontSize.value;
+            const font = fontStyle.value;
+            const align = textAlign.value;
+            const style = textStyle.value;
+            if (text) {
+                let fontWeight = isBold ? 'bold' : 'normal';
+                let fontStyleText = isItalic ? 'italic' : 'normal';
+                ctx.font = `${fontStyleText} ${fontWeight} ${size}px ${font}`;
+                ctx.fillStyle = color;
+                ctx.textAlign = align;
+                if (isShadow) {
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                    ctx.shadowBlur = 4;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                } else {
+                    ctx.shadowColor = 'transparent';
+                }
+
+                if (style === 'epic') {
+                    ctx.strokeStyle = 'orange';
+                    ctx.lineWidth = 3;
+                    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+                } else if (style === 'bold') {
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 4;
+                    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+                } else if (style === 'crack') {
+                    ctx.strokeStyle = 'purple';
+                    ctx.lineWidth = 2;
+                    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+                } else if (style === 'forward') {
+                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                    gradient.addColorStop(0, 'blue');
+                    gradient.addColorStop(1, 'white');
+                    ctx.fillStyle = gradient;
+                } else if (style === 'chocolate') {
+                    ctx.strokeStyle = 'brown';
+                    ctx.lineWidth = 3;
+                    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+                }
+
+                ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+                if (isUnderline) {
+                    const textWidth = ctx.measureText(text).width;
+                    const x = align === 'center' ? (canvas.width - textWidth) / 2 : align === 'left' ? 0 : canvas.width - textWidth;
+                    ctx.beginPath();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.moveTo(x, canvas.height / 2 + 5);
+                    ctx.lineTo(x + textWidth, canvas.height / 2 + 5);
+                    ctx.stroke();
+                }
+                textInput.value = '';
+            }
+        });
+
+        // Add emoji to canvas
+        addEmojiButton.addEventListener('click', () => {
+            const emoji = emojiPicker.value;
+            if (emoji) {
+                ctx.font = '40px Arial';
+                ctx.fillText(emoji, 100, 100);
+                emojiPicker.value = '';
+            }
+        });
+
+        // Download the sticker
+        downloadButton.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'sticker.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    </script>
+</body>
+</html>
